@@ -112,5 +112,52 @@
     similarListPosts.appendChild(fragment);
   };
 
-  renderPosts(createPosts(AMOUNT_PHOTOS));
+  var posts = createPosts(AMOUNT_PHOTOS);
+  renderPosts(posts);
+
+  var postModal = document.querySelector('.big-picture');
+  var postCommentBlock = postModal.querySelector('.social__comments');
+  var commentCount = postModal.querySelector('.social__comment-count');
+  var commentLoadMore = postModal.querySelector('.comments-loader');
+
+  var createCommentElement = function (comment) {
+    var commentElement = postCommentBlock.querySelector('.social__comment').cloneNode(true);
+    var commentAvatar = commentElement.querySelector('.social__picture');
+    var commentMessage = commentElement.querySelector('.social__text');
+
+    commentAvatar.src = comment.avatar;
+    commentAvatar.alt = comment.name;
+    commentMessage.textContent = comment.message;
+
+    return commentElement;
+  };
+
+  var renderComments = function (post) {
+    var fragment = document.createDocumentFragment();
+
+    for (var i = 0; i < post.comments.length; i++) {
+      fragment.appendChild(createCommentElement(post.comments[i]));
+    }
+    postCommentBlock.appendChild(fragment);
+  };
+
+  var setDataPost = function (post) {
+    var postPhoto = postModal.querySelector('.big-picture__img img');
+    var postLikes = postModal.querySelector('.likes-count');
+    var postComments = postModal.querySelector('.comments-count');
+    var postDesctiption = postModal.querySelector('.social__caption');
+
+    postPhoto.src = post.url;
+    postLikes.textContent = post.likes;
+    postComments.textContent = post.comments.length;
+    postDesctiption.textContent = post.descriptions;
+    renderComments(post);
+  };
+
+  postModal.classList.remove('hidden');
+  commentCount.classList.add('hidden');
+  commentLoadMore.classList.add('hidden');
+
+  setDataPost(posts[0]);
+
 })();
