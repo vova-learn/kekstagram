@@ -6,6 +6,8 @@
   var PHOTO_MAX_LIKE = 200;
   var COMMENT_MIN_AVATAR_URL = 1;
   var COMMENT_MAX_AVATAR_URL = 6;
+  var COMMENTS_MIN_AMOUNT = 1;
+  var COMMENTS_MAX_AMOUNT = 3;
   var photoDescriptions = [
     'Кажется, что-то пролетело. Это мой отпуск.',
     'По догоре на пляж!',
@@ -41,7 +43,28 @@
   };
 
   var getRandomNumber = function (min, max) {
-    return Math.floor((Math.random() * (max - min)) + min);
+    return Math.round((Math.random() * (max - min)) + min);
+  };
+
+  var createComment = function () {
+    var commentAvatar = 'img/avatar-' + getRandomNumber(COMMENT_MIN_AVATAR_URL, COMMENT_MAX_AVATAR_URL) + '.svg';
+    var commentName = getRandomElement(commentNames);
+    var commentMessage = getRandomElement(commentMessages);
+
+    return {
+      avatar: commentAvatar,
+      name: commentName,
+      message: commentMessage
+    };
+  };
+
+  var createComments = function (amount) {
+    var comments = [];
+
+    for (var i = 1; i <= amount; i++) {
+      comments.push(createComment());
+    }
+    return comments;
   };
 
   var createPosts = function (amount) {
@@ -57,23 +80,9 @@
     var postPhoto = 'photos/' + index + '.jpg';
     var postDescription = getRandomElement(photoDescriptions);
     var postLike = getRandomNumber(PHOTO_MIN_LIKE, PHOTO_MAX_LIKE);
-    var postComments = [
-      {
-        avatar: 'img/avatar-' + getRandomNumber(COMMENT_MIN_AVATAR_URL, COMMENT_MAX_AVATAR_URL) + '.svg',
-        message: getRandomElement(commentNames),
-        name: getRandomElement(commentMessages)
-      },
-      {
-        avatar: 'img/avatar-' + getRandomNumber(COMMENT_MIN_AVATAR_URL, COMMENT_MAX_AVATAR_URL) + '.svg',
-        message: getRandomElement(commentNames),
-        name: getRandomElement(commentMessages)
-      },
-      {
-        avatar: 'img/avatar-' + getRandomNumber(COMMENT_MIN_AVATAR_URL, COMMENT_MAX_AVATAR_URL) + '.svg',
-        message: getRandomElement(commentNames),
-        name: getRandomElement(commentMessages)
-      }
-    ];
+    var commentsAmount = getRandomNumber(COMMENTS_MIN_AMOUNT, COMMENTS_MAX_AMOUNT);
+    var postComments = createComments(commentsAmount);
+
     return {
       url: postPhoto,
       descriptions: postDescription,
@@ -89,7 +98,8 @@
     var postComments = postElement.querySelector('.picture__comments');
     postImg.src = post.url;
     postLikes.textContent = post.likes;
-    postComments.textContent = getRandomIndex(post.comments) + 1;
+    postComments.textContent = post.comments.length;
+
     return postElement;
   };
 
