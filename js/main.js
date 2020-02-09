@@ -2,24 +2,24 @@
 
 (function () {
   var AMOUNT_PHOTOS = 25;
-  var PHOTOS_DESCRIPTIONS = [
+  var PHOTO_MIN_LIKE = 15;
+  var PHOTO_MAX_LIKE = 200;
+  var COMMENT_MIN_AVATAR_URL = 1;
+  var COMMENT_MAX_AVATAR_URL = 6;
+  var photoDescriptions = [
     'Кажется, что-то пролетело. Это мой отпуск.',
     'По догоре на пляж!',
     'Наша первая встреча с дикими животными.',
     'Здоровое питание - прекрасное самочувствие!'
   ];
-  var PHOTO_MIN_LIKE = 15;
-  var PHOTO_MAX_LIKE = 200;
-  var COMMENT_MIN_AVATAR_URL = 1;
-  var COMMENT_MAX_AVATAR_URL = 6;
-  var COMMENTS_NAMES = [
+  var commentNames = [
     'Коко',
     'Лулу',
     'Гучи',
     'Кузя',
     'Пушок'
   ];
-  var COMMENTS_MESSAGES = [
+  var commentMessages = [
     'Всё отлично!',
     'В целом всё неплохо. Но не всё.',
     'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
@@ -27,11 +27,9 @@
     'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
     'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
   ];
-
   var templatePost = document.querySelector('#picture')
     .content
     .querySelector('.picture');
-
   var similarListPosts = document.querySelector('.pictures');
 
   var getRandomIndex = function (array) {
@@ -57,23 +55,23 @@
 
   var createPost = function (index) {
     var postPhoto = 'photos/' + index + '.jpg';
-    var postDescription = getRandomElement(PHOTOS_DESCRIPTIONS);
+    var postDescription = getRandomElement(photoDescriptions);
     var postLike = getRandomNumber(PHOTO_MIN_LIKE, PHOTO_MAX_LIKE);
     var postComments = [
       {
         avatar: 'img/avatar-' + getRandomNumber(COMMENT_MIN_AVATAR_URL, COMMENT_MAX_AVATAR_URL) + '.svg',
-        message: getRandomElement(COMMENTS_NAMES),
-        name: getRandomElement(COMMENTS_MESSAGES)
+        message: getRandomElement(commentNames),
+        name: getRandomElement(commentMessages)
       },
       {
         avatar: 'img/avatar-' + getRandomNumber(COMMENT_MIN_AVATAR_URL, COMMENT_MAX_AVATAR_URL) + '.svg',
-        message: getRandomElement(COMMENTS_NAMES),
-        name: getRandomElement(COMMENTS_MESSAGES)
+        message: getRandomElement(commentNames),
+        name: getRandomElement(commentMessages)
       },
       {
         avatar: 'img/avatar-' + getRandomNumber(COMMENT_MIN_AVATAR_URL, COMMENT_MAX_AVATAR_URL) + '.svg',
-        message: getRandomElement(COMMENTS_NAMES),
-        name: getRandomElement(COMMENTS_MESSAGES)
+        message: getRandomElement(commentNames),
+        name: getRandomElement(commentMessages)
       }
     ];
     return {
