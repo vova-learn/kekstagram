@@ -186,19 +186,23 @@
     var removeSymbol = /[^a-zA-Zа-яА-Я0-9#]/g;
 
     var checkUpLowCase = function () {
+      var checkCase;
       for (var j = 0; j < hashtags.length; j++) {
         if (hashtags[i].toLowerCase() === hashtags[j].toLowerCase() && j !== i) {
-          return true;
+          checkCase = true;
         }
       }
+      return checkCase;
     };
 
     var checkDoubleHash = function () {
+      var checkHash;
       for (var j = 1; j < hashtags[i].split('').length; j++) {
         if (hashtags[i].split('')[j] === '#') {
-          return true;
+          checkHash = true;
         }
       }
+      return checkHash;
     };
 
     for (var i = 0; i < hashtags.length; i++) {
@@ -213,7 +217,7 @@
       } else if (hashtags[i].length > 20) {
         hashtagInput.setCustomValidity('Хеш-тег не может быть длинее 20 символов');
       } else if (checkUpLowCase()) {
-        hashtagInput.setCustomValidity('Один и тот же хэш-тег не может быть использован дважды без учёта регистра: #ХэшТег и #хэштег считаются одним и тем же тегом)');
+        hashtagInput.setCustomValidity('Один и тот же хэш-тег не может быть использован дважды без учёта регистра: #ХэшТег и #хэштег считаются одним и тем же тегом');
       } else if (hashtags.length > 5) {
         hashtagInput.setCustomValidity('Использование больше пяти хэш-тегов невозможно');
       } else {
@@ -295,7 +299,7 @@
   }
 
   var getScaleValue = function (value) {
-    return parseInt(value.replace(/\D+/g, ''));
+    return parseInt(value.replace(/\D+/g, ''), 10);
   };
 
   scaleControl.addEventListener('click', function (evt) {
