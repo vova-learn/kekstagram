@@ -337,10 +337,6 @@
     effectLevel.classList.add('hidden');
   };
 
-  var modificationPhotoDefaultHandler = function (evt) { // change по умолчанию, у меня и без сбрасывания норм
-    evt.preventDefault();
-  };
-
   uploadFile.addEventListener('change', modificationPhotoHandler);
 
   var defaultSettings = function () {
@@ -349,7 +345,7 @@
     checkSetAtribute(effectsButtons[0], effectsButtons, 'checked');
     photoPreview.removeAttribute('class');
     photoPreview.removeAttribute('style');
-    uploadFile.addEventListener('change', modificationPhotoDefaultHandler); // ???
+    uploadFile.value = '';
   };
 
   closeButton.addEventListener('click', function () {
