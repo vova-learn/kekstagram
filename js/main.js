@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var ESC_KEY = 27;
+
   var AMOUNT_PHOTOS = 25;
   var PHOTO_MIN_LIKE = 15;
   var PHOTO_MAX_LIKE = 200;
@@ -155,15 +157,13 @@
     renderComments(post);
   };
 
-  // Открыть просмотр поста
-  // postModal.classList.remove('hidden');
-  // bodyDocument.classList.add('modal-open');
+  // Для того, чтобы открыть окно поста нужно:
+  // в postModal удалить hidden и в body добавить modal-open
+
   commentCount.classList.add('hidden');
   commentLoadMore.classList.add('hidden');
 
   setDataPost(posts[0]);
-
-  var ESC_KEY = 27;
 
   var uploadFile = document.querySelector('#upload-file');
   var modalPhotoModification = document.querySelector('.img-upload__overlay');
@@ -180,15 +180,26 @@
   var hashtagInput = modalPhotoModification.querySelector('.text__hashtags');
   var commentInput = modalPhotoModification.querySelector('.text__description');
 
-  var checkhashtagInputHandler = function () {
+  var checkSpace = function (hashtagsArray) {
+    for (var i = 0; i < hashtagsArray.length; i++) {
+      if (hashtagsArray[i] === '') {
+        hashtagsArray.splice(i, 1);
+        i--;
+      }
+    }
+    return hashtagsArray;
+  };
+
+  var checkHashtagInputHandler = function () {
     var hashtagInputValue = hashtagInput.value;
-    var hashtags = hashtagInputValue.split(' ');
+    var hashtagsWithSpace = hashtagInputValue.trim().toLowerCase().split(' ');
+    var hashtags = checkSpace(hashtagsWithSpace);
     var removeSymbol = /[^a-zA-Zа-яА-Я0-9#]/g;
 
     var checkUpLowCase = function () {
       var checkCase;
       for (var j = 0; j < hashtags.length; j++) {
-        if (hashtags[i].toLowerCase() === hashtags[j].toLowerCase() && j !== i) {
+        if (hashtags[i] === hashtags[j] && j !== i) {
           checkCase = true;
         }
       }
@@ -197,8 +208,8 @@
 
     var checkDoubleHash = function () {
       var checkHash;
-      for (var j = 1; j < hashtags[i].split('').length; j++) {
-        if (hashtags[i].split('')[j] === '#') {
+      for (var j = 1; j < hashtags[i].length; j++) {
+        if (hashtags[i][j] === '#') {
           checkHash = true;
         }
       }
@@ -206,13 +217,13 @@
     };
 
     for (var i = 0; i < hashtags.length; i++) {
-      if (hashtags[i].split('')[0] !== '#') {
+      if (hashtags[i][0] !== '#') {
         hashtagInput.setCustomValidity('Хэш-тег должен начинаться с решётки (#)');
       } else if (hashtags[i].search(removeSymbol) > 0) {
         hashtagInput.setCustomValidity('После решётки (#) хэш-тег должен состоять только из букв и чисел');
       } else if (checkDoubleHash()) {
-        hashtagInput.setCustomValidity('Может быть использован только одна решётка (#)');
-      } else if (hashtags[i].split('').length <= 1) {
+        hashtagInput.setCustomValidity('Может быть использована только одна решётка (#)');
+      } else if (hashtags[i].length <= 1) {
         hashtagInput.setCustomValidity('Хеш-тег не может состоять только из одного символа');
       } else if (hashtags[i].length > 20) {
         hashtagInput.setCustomValidity('Хеш-тег не может быть длинее 20 символов');
@@ -226,7 +237,7 @@
     }
   };
 
-  hashtagInput.addEventListener('input', checkhashtagInputHandler);
+  hashtagInput.addEventListener('input', checkHashtagInputHandler);
 
   var checkLevelIntensityHandler = function () {
     var intensity = effectLevelValue.value;
@@ -299,7 +310,7 @@
   }
 
   var getScaleValue = function (value) {
-    return parseInt(value.replace(/\D+/g, ''), 10);
+    return parseInt(value, 10);
   };
 
   scaleControl.addEventListener('click', function (evt) {
@@ -339,7 +350,7 @@
 
   uploadFile.addEventListener('change', modificationPhotoHandler);
 
-  var defaultSettings = function () {
+  var setDefaultSettings = function () {
     modalPhotoModification.classList.add('hidden');
     bodyDocument.classList.remove('modal-open');
     checkSetAtribute(effectsButtons[0], effectsButtons, 'checked');
@@ -348,13 +359,11 @@
     uploadFile.value = '';
   };
 
-  closeButton.addEventListener('click', function () {
-    defaultSettings();
-  });
+  closeButton.addEventListener('click', setDefaultSettings);
 
   document.addEventListener('keydown', function (evt) {
     if (evt.keyCode === ESC_KEY && evt.target !== hashtagInput && evt.target !== commentInput) {
-      defaultSettings();
+      setDefaultSettings();
     }
   });
 
