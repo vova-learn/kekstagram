@@ -180,21 +180,16 @@
   var hashtagInput = modalPhotoModification.querySelector('.text__hashtags');
   var commentInput = modalPhotoModification.querySelector('.text__description');
 
-  var checkSpace = function (hashtagsArray) {
-    for (var i = 0; i < hashtagsArray.length; i++) {
-      if (hashtagsArray[i] === '') {
-        hashtagsArray.splice(i, 1);
-        i--;
-      }
-    }
-    return hashtagsArray;
+  var checkSpace = function (checkValue) {
+    return checkValue !== '';
   };
 
   var checkHashtagInputHandler = function () {
     var hashtagInputValue = hashtagInput.value;
-    var hashtagsWithSpace = hashtagInputValue.trim().toLowerCase().split(' ');
-    var hashtags = checkSpace(hashtagsWithSpace);
-    var removeSymbol = /[^a-zA-Zа-яА-Я0-9#]/g;
+    // var hashtagsWithSpace = hashtagInputValue.trim().toLowerCase().split(' ');
+    // var hashtags = checkSpace(hashtagsWithSpace);
+    var hashtags = hashtagInputValue.trim().toLowerCase().split(' ').filter(checkSpace);
+    var removeSymbol = /[^a-zA-Zа-яА-Я0-9ё#]/g;
 
     var checkUpLowCase = function () {
       var checkCase;
