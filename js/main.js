@@ -395,10 +395,10 @@
     }
   });
 
-  var showPostModal = function (posts, imgSrc) {
-    for (var i = 0; i < posts.length; i++) {
-      if (imgSrc === posts[i].url) {
-        setDataPost(posts[i]);
+  var showPostModal = function (postsGenerate, imgSrc) {
+    for (var i = 0; i < postsGenerate.length; i++) {
+      if (imgSrc === postsGenerate[i].url) {
+        setDataPost(postsGenerate[i]);
         postModal.classList.remove('hidden');
         bodyTag.classList.add('modal-open');
       }
@@ -423,10 +423,10 @@
     });
   };
 
-  (function (posts) {
-    for (var i = 0; i < posts.length; i++) {
-      postPreviewClick(posts[i]);
-      postPreviewKeydown(posts[i]);
+  (function (postsElement) {
+    for (var i = 0; i < postsElement.length; i++) {
+      postPreviewClick(postsElement[i]);
+      postPreviewKeydown(postsElement[i]);
     }
   })(postsPreview);
 
