@@ -307,12 +307,9 @@
     });
   };
 
-  (function (buttons) {
-    for (var i = 0; i < buttons.length; i++) {
-      addEffectClickHandler(buttons[i], buttons);
-    }
-  })(effectsButtons);
-
+  effectsButtons.forEach(function (effectsButton) {
+    addEffectClickHandler(effectsButton, effectsButtons);
+  });
 
   var getScaleValue = function (value) {
     return parseInt(value, 10);
