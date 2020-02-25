@@ -2,6 +2,7 @@
 
 (function () {
   var ESC_KEY = 27;
+  var ENTER_KEY = 13;
 
   var AMOUNT_PHOTOS = 25;
   var PHOTO_MIN_LIKE = 15;
@@ -117,7 +118,7 @@
   var posts = createPosts(AMOUNT_PHOTOS);
   renderPosts(posts);
 
-  var bodyDocument = document.querySelector('body');
+  var bodyTag = document.querySelector('body');
   var postModal = document.querySelector('.big-picture');
   var postCommentBlock = postModal.querySelector('.social__comments');
   var commentCount = postModal.querySelector('.social__comment-count');
@@ -141,7 +142,13 @@
     for (var i = 0; i < post.comments.length; i++) {
       fragment.appendChild(createCommentElement(post.comments[i]));
     }
-    postCommentBlock.appendChild(fragment);
+
+    for (var j = 0; j < postCommentBlock.childElementCount; j++) {
+      if (postCommentBlock.childElementCount > 1) {
+        postCommentBlock.firstChild.remove();
+      }
+    }
+    postCommentBlock.replaceChild(fragment, postCommentBlock.querySelector('.social__comment'));
   };
 
   var setDataPost = function (post) {
@@ -163,7 +170,9 @@
   commentCount.classList.add('hidden');
   commentLoadMore.classList.add('hidden');
 
-  setDataPost(posts[0]);
+  // Для принудительного показа поста выззвать функцию setDataPost с аргументом posts[От 0 до 25]
+
+  // ---------- MODULE4-TASK2 ----------
 
   var uploadFile = document.querySelector('#upload-file');
   var modalPhotoModification = document.querySelector('.img-upload__overlay');
@@ -186,8 +195,6 @@
 
   var checkHashtagInputHandler = function () {
     var hashtagInputValue = hashtagInput.value;
-    // var hashtagsWithSpace = hashtagInputValue.trim().toLowerCase().split(' ');
-    // var hashtags = checkSpace(hashtagsWithSpace);
     var hashtags = hashtagInputValue.trim().toLowerCase().split(' ').filter(checkSpace);
     var removeSymbol = /[^a-zA-Zа-яА-Я0-9ё#]/g;
 
@@ -300,9 +307,9 @@
     });
   };
 
-  for (var i = 0; i < effectsButtons.length; i++) {
-    addEffectClickHandler(effectsButtons[i], effectsButtons);
-  }
+  effectsButtons.forEach(function (effectsButton) {
+    addEffectClickHandler(effectsButton, effectsButtons);
+  });
 
   var getScaleValue = function (value) {
     return parseInt(value, 10);
@@ -339,7 +346,7 @@
 
   var modificationPhotoHandler = function () {
     modalPhotoModification.classList.remove('hidden');
-    bodyDocument.classList.add('modal-open');
+    bodyTag.classList.add('modal-open');
     effectLevel.classList.add('hidden');
   };
 
@@ -347,19 +354,77 @@
 
   var setDefaultSettings = function () {
     modalPhotoModification.classList.add('hidden');
-    bodyDocument.classList.remove('modal-open');
+    bodyTag.classList.remove('modal-open');
     checkSetAtribute(effectsButtons[0], effectsButtons, 'checked');
     photoPreview.removeAttribute('class');
     photoPreview.removeAttribute('style');
     uploadFile.value = '';
   };
 
-  closeButton.addEventListener('click', setDefaultSettings);
+  closeButton.addEventListener('click', function () {
+    setDefaultSettings();
+  });
 
   document.addEventListener('keydown', function (evt) {
     if (evt.keyCode === ESC_KEY && evt.target !== hashtagInput && evt.target !== commentInput) {
       setDefaultSettings();
     }
   });
+
+  // ---------- MODULE4-TASK3 ----------
+
+  var postsPreview = document.querySelectorAll('.picture');
+  var postModalClose = postModal.querySelector('.big-picture__cancel');
+
+  var hiddenPostModal = function () {
+    postModal.classList.add('hidden');
+    bodyTag.classList.remove('modal-open');
+  };
+
+  postModalClose.addEventListener('click', function () {
+    hiddenPostModal();
+  });
+
+  document.addEventListener('keydown', function (evt) {
+    var openPostModal = document.querySelector('.big-picture').classList.contains('hidden');
+    if (evt.keyCode === ESC_KEY && !openPostModal) {
+      hiddenPostModal();
+    }
+  });
+
+  var showPostModal = function (postsGenerate, imgSrc) {
+    for (var i = 0; i < postsGenerate.length; i++) {
+      if (imgSrc === postsGenerate[i].url) {
+        setDataPost(postsGenerate[i]);
+        postModal.classList.remove('hidden');
+        bodyTag.classList.add('modal-open');
+      }
+    }
+  };
+
+  var postPreviewClick = function (post) {
+    post.addEventListener('click', function (evt) {
+      if (evt.target.tagName.toLowerCase() === 'img') {
+        var imgSrc = evt.target.getAttribute('src');
+        showPostModal(posts, imgSrc);
+      }
+    });
+  };
+
+  var postPreviewKeydown = function (post) {
+    post.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === ENTER_KEY) {
+        var imgSrc = evt.target.querySelector('img').getAttribute('src');
+        showPostModal(posts, imgSrc);
+      }
+    });
+  };
+
+  (function (postsElement) {
+    for (var i = 0; i < postsElement.length; i++) {
+      postPreviewClick(postsElement[i]);
+      postPreviewKeydown(postsElement[i]);
+    }
+  })(postsPreview);
 
 })();
