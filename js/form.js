@@ -1,178 +1,7 @@
 'use strict';
-
 (function () {
-  var ESC_KEY = 27;
-  var ENTER_KEY = 13;
 
-  var AMOUNT_PHOTOS = 25;
-  var PHOTO_MIN_LIKE = 15;
-  var PHOTO_MAX_LIKE = 200;
-  var COMMENT_MIN_AVATAR_URL = 1;
-  var COMMENT_MAX_AVATAR_URL = 6;
-  var COMMENTS_MIN_AMOUNT = 1;
-  var COMMENTS_MAX_AMOUNT = 3;
-  var photoDescriptions = [
-    'Кажется, что-то пролетело. Это мой отпуск.',
-    'По догоре на пляж!',
-    'Наша первая встреча с дикими животными.',
-    'Здоровое питание - прекрасное самочувствие!'
-  ];
-  var commentNames = [
-    'Коко',
-    'Лулу',
-    'Гучи',
-    'Кузя',
-    'Пушок'
-  ];
-  var commentMessages = [
-    'Всё отлично!',
-    'В целом всё неплохо. Но не всё.',
-    'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
-    'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
-    'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
-    'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
-  ];
-  var templatePost = document.querySelector('#picture')
-    .content
-    .querySelector('.picture');
-  var similarListPosts = document.querySelector('.pictures');
-
-  var getRandomIndex = function (array) {
-    return Math.floor(Math.random() * array.length);
-  };
-
-  var getRandomElement = function (array) {
-    return array[getRandomIndex(array)];
-  };
-
-  var getRandomNumber = function (min, max) {
-    return Math.round((Math.random() * (max - min)) + min);
-  };
-
-  var createComment = function () {
-    var commentAvatar = 'img/avatar-' + getRandomNumber(COMMENT_MIN_AVATAR_URL, COMMENT_MAX_AVATAR_URL) + '.svg';
-    var commentName = getRandomElement(commentNames);
-    var commentMessage = getRandomElement(commentMessages);
-
-    return {
-      avatar: commentAvatar,
-      name: commentName,
-      message: commentMessage
-    };
-  };
-
-  var createComments = function (amount) {
-    var comments = [];
-
-    for (var i = 1; i <= amount; i++) {
-      comments.push(createComment());
-    }
-    return comments;
-  };
-
-  var createPosts = function (amount) {
-    var posts = [];
-
-    for (var i = 1; i <= amount; i++) {
-      posts.push(createPost(i));
-    }
-    return posts;
-  };
-
-  var createPost = function (index) {
-    var postPhoto = 'photos/' + index + '.jpg';
-    var postDescription = getRandomElement(photoDescriptions);
-    var postLike = getRandomNumber(PHOTO_MIN_LIKE, PHOTO_MAX_LIKE);
-    var commentsAmount = getRandomNumber(COMMENTS_MIN_AMOUNT, COMMENTS_MAX_AMOUNT);
-    var postComments = createComments(commentsAmount);
-
-    return {
-      url: postPhoto,
-      descriptions: postDescription,
-      likes: postLike,
-      comments: postComments
-    };
-  };
-
-  var createPostElement = function (post) {
-    var postElement = templatePost.cloneNode(true);
-    var postImg = postElement.querySelector('.picture__img');
-    var postLikes = postElement.querySelector('.picture__likes');
-    var postComments = postElement.querySelector('.picture__comments');
-    postImg.src = post.url;
-    postLikes.textContent = post.likes;
-    postComments.textContent = post.comments.length;
-
-    return postElement;
-  };
-
-  var renderPosts = function (posts) {
-    var fragment = document.createDocumentFragment();
-
-    for (var i = 0; i < posts.length; i++) {
-      fragment.appendChild(createPostElement(posts[i]));
-    }
-    similarListPosts.appendChild(fragment);
-  };
-
-  var posts = createPosts(AMOUNT_PHOTOS);
-  renderPosts(posts);
-
-  var bodyTag = document.querySelector('body');
-  var postModal = document.querySelector('.big-picture');
-  var postCommentBlock = postModal.querySelector('.social__comments');
-  var commentCount = postModal.querySelector('.social__comment-count');
-  var commentLoadMore = postModal.querySelector('.comments-loader');
-
-  var createCommentElement = function (comment) {
-    var commentElement = postCommentBlock.querySelector('.social__comment').cloneNode(true);
-    var commentAvatar = commentElement.querySelector('.social__picture');
-    var commentMessage = commentElement.querySelector('.social__text');
-
-    commentAvatar.src = comment.avatar;
-    commentAvatar.alt = comment.name;
-    commentMessage.textContent = comment.message;
-
-    return commentElement;
-  };
-
-  var renderComments = function (post) {
-    var fragment = document.createDocumentFragment();
-
-    for (var i = 0; i < post.comments.length; i++) {
-      fragment.appendChild(createCommentElement(post.comments[i]));
-    }
-
-    for (var j = 0; j < postCommentBlock.childElementCount; j++) {
-      if (postCommentBlock.childElementCount > 1) {
-        postCommentBlock.firstChild.remove();
-      }
-    }
-    postCommentBlock.replaceChild(fragment, postCommentBlock.querySelector('.social__comment'));
-  };
-
-  var setDataPost = function (post) {
-    var postPhoto = postModal.querySelector('.big-picture__img img');
-    var postLikes = postModal.querySelector('.likes-count');
-    var postComments = postModal.querySelector('.comments-count');
-    var postDesctiption = postModal.querySelector('.social__caption');
-
-    postPhoto.src = post.url;
-    postLikes.textContent = post.likes;
-    postComments.textContent = post.comments.length;
-    postDesctiption.textContent = post.descriptions;
-    renderComments(post);
-  };
-
-  // Для того, чтобы открыть окно поста нужно:
-  // в postModal удалить hidden и в body добавить modal-open
-
-  commentCount.classList.add('hidden');
-  commentLoadMore.classList.add('hidden');
-
-  // Для принудительного показа поста выззвать функцию setDataPost с аргументом posts[От 0 до 25]
-
-  // ---------- MODULE4-TASK2 ----------
+  // import window.utility: bodyTag, ESCAPE
 
   var uploadFile = document.querySelector('#upload-file');
   var modalPhotoModification = document.querySelector('.img-upload__overlay');
@@ -346,7 +175,7 @@
 
   var modificationPhotoHandler = function () {
     modalPhotoModification.classList.remove('hidden');
-    bodyTag.classList.add('modal-open');
+    window.utility.bodyTag.classList.add('modal-open');
     effectLevel.classList.add('hidden');
   };
 
@@ -354,7 +183,7 @@
 
   var setDefaultSettings = function () {
     modalPhotoModification.classList.add('hidden');
-    bodyTag.classList.remove('modal-open');
+    window.utility.bodyTag.classList.remove('modal-open');
     checkSetAtribute(effectsButtons[0], effectsButtons, 'checked');
     photoPreview.removeAttribute('class');
     photoPreview.removeAttribute('style');
@@ -366,65 +195,9 @@
   });
 
   document.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === ESC_KEY && evt.target !== hashtagInput && evt.target !== commentInput) {
+    if (evt.keyCode === window.utility.ESCAPE && evt.target !== hashtagInput && evt.target !== commentInput) {
       setDefaultSettings();
     }
   });
-
-  // ---------- MODULE4-TASK3 ----------
-
-  var postsPreview = document.querySelectorAll('.picture');
-  var postModalClose = postModal.querySelector('.big-picture__cancel');
-
-  var hiddenPostModal = function () {
-    postModal.classList.add('hidden');
-    bodyTag.classList.remove('modal-open');
-  };
-
-  postModalClose.addEventListener('click', function () {
-    hiddenPostModal();
-  });
-
-  document.addEventListener('keydown', function (evt) {
-    var openPostModal = document.querySelector('.big-picture').classList.contains('hidden');
-    if (evt.keyCode === ESC_KEY && !openPostModal) {
-      hiddenPostModal();
-    }
-  });
-
-  var showPostModal = function (postsGenerate, imgSrc) {
-    for (var i = 0; i < postsGenerate.length; i++) {
-      if (imgSrc === postsGenerate[i].url) {
-        setDataPost(postsGenerate[i]);
-        postModal.classList.remove('hidden');
-        bodyTag.classList.add('modal-open');
-      }
-    }
-  };
-
-  var postPreviewClick = function (post) {
-    post.addEventListener('click', function (evt) {
-      if (evt.target.tagName.toLowerCase() === 'img') {
-        var imgSrc = evt.target.getAttribute('src');
-        showPostModal(posts, imgSrc);
-      }
-    });
-  };
-
-  var postPreviewKeydown = function (post) {
-    post.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === ENTER_KEY) {
-        var imgSrc = evt.target.querySelector('img').getAttribute('src');
-        showPostModal(posts, imgSrc);
-      }
-    });
-  };
-
-  (function (postsElement) {
-    for (var i = 0; i < postsElement.length; i++) {
-      postPreviewClick(postsElement[i]);
-      postPreviewKeydown(postsElement[i]);
-    }
-  })(postsPreview);
 
 })();
