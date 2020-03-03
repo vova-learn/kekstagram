@@ -14,7 +14,9 @@
   var effectsButtons = modalPhotoModification.querySelectorAll('.effects__radio');
   var effectLevel = modalPhotoModification.querySelector('.effect-level');
   var effectLevelValue = effectLevel.querySelector('.effect-level__value');
-  var levelControl = effectLevel.querySelector('.effect-level__pin');
+  var levelControlLine = effectLevel.querySelector('.effect-level__line');
+  var levelControlDepthLine = effectLevel.querySelector('.effect-level__depth');
+  var levelControlPin = effectLevel.querySelector('.effect-level__pin');
   var hashtagInput = modalPhotoModification.querySelector('.text__hashtags');
   var commentInput = modalPhotoModification.querySelector('.text__description');
 
@@ -85,7 +87,41 @@
     }
   };
 
-  levelControl.addEventListener('mouseup', checkLevelIntensityHandler);
+  var effectUpdate = function (coords, value) {
+    levelControlPin.style.left = coords + 'px';
+    levelControlDepthLine.style.width = coords + 'px';
+    effectLevelValue.value = value;
+  };
+
+  levelControlPin.addEventListener('mousedown', function (evt) {
+    var startCoords = {
+      x: evt.clientX
+    };
+
+    var mouseMoveHandler = function (moveEvt) {
+      var shift = {
+        x: startCoords.x - moveEvt.clientX
+      };
+      startCoords = {
+        x: moveEvt.clientX
+      };
+
+      if (levelControlPin.offsetLeft - shift.x <= levelControlLine.clientWidth && levelControlPin.offsetLeft - shift.x >= levelControlLine.clientLeft) {
+        var getLevelEffect = levelControlPin.offsetLeft - shift.x;
+        var getEffectLevelValue = Math.round(getLevelEffect * 100 / levelControlLine.clientWidth);
+        effectUpdate(getLevelEffect, getEffectLevelValue);
+        checkLevelIntensityHandler();
+      }
+    };
+
+    var mouseUpHandler = function () {
+      document.removeEventListener('mousemove', mouseMoveHandler);
+      document.removeEventListener('mouseup', mouseUpHandler);
+    };
+
+    document.addEventListener('mousemove', mouseMoveHandler);
+    document.addEventListener('mouseup', mouseUpHandler);
+  });
 
   var checkSetAtribute = function (element, elements, atribute) {
     if (element.hasAttribute(atribute) !== true) {
@@ -128,6 +164,7 @@
     effect.addEventListener('click', function () {
       checkSetAtribute(effect, effectAll, 'checked');
       checkClassEffect(effect, 'id', photoPreview);
+      effectUpdate(levelControlLine.clientWidth || 454, 100);
       if (effect.getAttribute('id') !== 'effect-none') {
         effectLevel.classList.remove('hidden');
       } else {
