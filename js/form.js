@@ -3,6 +3,9 @@
 
   // import window.utility: bodyTag, ESCAPE
 
+  var MAX_EFFECT_VALUE = 100;
+  var LINE_WIDTH = 454;
+
   var uploadFile = document.querySelector('#upload-file');
   var modalPhotoModification = document.querySelector('.img-upload__overlay');
   var closeButton = modalPhotoModification.querySelector('#upload-cancel');
@@ -14,7 +17,9 @@
   var effectsButtons = modalPhotoModification.querySelectorAll('.effects__radio');
   var effectLevel = modalPhotoModification.querySelector('.effect-level');
   var effectLevelValue = effectLevel.querySelector('.effect-level__value');
-  var levelControl = effectLevel.querySelector('.effect-level__pin');
+  var levelControlLine = effectLevel.querySelector('.effect-level__line');
+  var levelControlDepthLine = effectLevel.querySelector('.effect-level__depth');
+  var levelControlPin = effectLevel.querySelector('.effect-level__pin');
   var hashtagInput = modalPhotoModification.querySelector('.text__hashtags');
   var commentInput = modalPhotoModification.querySelector('.text__description');
 
@@ -70,7 +75,7 @@
 
   hashtagInput.addEventListener('input', checkHashtagInputHandler);
 
-  var checkLevelIntensityHandler = function () {
+  var checkLevelIntensity = function () {
     var intensity = effectLevelValue.value;
     if (photoPreview.classList.contains('effects__preview--chrome')) {
       photoPreview.style.filter = 'grayscale(' + intensity / 100 + ')';
@@ -85,39 +90,82 @@
     }
   };
 
-  levelControl.addEventListener('mouseup', checkLevelIntensityHandler);
+  var updateEffect = function (coords, value) {
+    levelControlPin.style.left = coords + 'px';
+    levelControlDepthLine.style.width = coords + 'px';
+    effectLevelValue.value = value;
+    checkLevelIntensity();
+  };
 
-  var checkSetAtribute = function (element, elements, atribute) {
-    if (element.hasAttribute(atribute) !== true) {
-      for (var i = 0; i < elements.length; i++) {
-        elements[i].removeAttribute(atribute);
+  levelControlPin.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+    var startCoords = {
+      x: evt.clientX
+    };
+
+    var mouseMoveHandler = function (moveEvt) {
+      var shift = {
+        x: startCoords.x - moveEvt.clientX
+      };
+      startCoords = {
+        x: moveEvt.clientX
+      };
+
+      var levelEffect = levelControlPin.offsetLeft - shift.x;
+      var effectValue = Math.round(levelEffect * 100 / levelControlLine.clientWidth);
+      var rectLine = levelControlLine.getBoundingClientRect();
+
+      if (levelEffect <= levelControlLine.clientWidth && levelEffect >= levelControlLine.clientLeft) {
+        if (startCoords.x < rectLine.x) {
+          updateEffect(0, 0);
+        } else if (startCoords.x > rectLine.right) {
+          updateEffect(levelControlLine.clientWidth, MAX_EFFECT_VALUE);
+        } else {
+          updateEffect(levelEffect, effectValue);
+        }
       }
-      element.setAttribute(atribute, '');
+    };
+
+    var mouseUpHandler = function () {
+      document.removeEventListener('mousemove', mouseMoveHandler);
+      document.removeEventListener('mouseup', mouseUpHandler);
+    };
+
+    document.addEventListener('mousemove', mouseMoveHandler);
+    document.addEventListener('mouseup', mouseUpHandler);
+  });
+
+  var toggleAttribute = function (element, elements, attribute) {
+    if (!element.hasAttribute(attribute)) {
+      for (var i = 0; i < elements.length; i++) {
+        elements[i].removeAttribute(attribute);
+      }
+      element.setAttribute(attribute, '');
     }
   };
 
-  var checkClassEffect = function (element, atribute, img) {
-    if (element.getAttribute(atribute) === 'effect-chrome') {
+  var checkClassEffect = function (element, attribute, img) {
+    if (element.getAttribute(attribute) === 'effect-chrome') {
       img.removeAttribute('class');
       img.style.filter = '';
       img.classList.add('effects__preview--chrome');
-    } else if (element.getAttribute(atribute) === 'effect-sepia') {
+    } else if (element.getAttribute(attribute) === 'effect-sepia') {
       img.removeAttribute('class');
       img.style.filter = '';
       img.classList.add('effects__preview--sepia');
-    } else if (element.getAttribute(atribute) === 'effect-marvin') {
+    } else if (element.getAttribute(attribute) === 'effect-marvin') {
       img.removeAttribute('class');
       img.style.filter = '';
       img.classList.add('effects__preview--marvin');
-    } else if (element.getAttribute(atribute) === 'effect-phobos') {
+    } else if (element.getAttribute(attribute) === 'effect-phobos') {
       img.removeAttribute('class');
       img.style.filter = '';
       img.classList.add('effects__preview--phobos');
-    } else if (element.getAttribute(atribute) === 'effect-heat') {
+    } else if (element.getAttribute(attribute) === 'effect-heat') {
       img.removeAttribute('class');
       img.style.filter = '';
       img.classList.add('effects__preview--heat');
-    } else if (element.getAttribute(atribute) === 'effect-none') {
+    } else if (element.getAttribute(attribute) === 'effect-none') {
       img.removeAttribute('class');
       img.style.filter = '';
       img.classList.add('effects__preview--none');
@@ -126,8 +174,9 @@
 
   var addEffectClickHandler = function (effect, effectAll) {
     effect.addEventListener('click', function () {
-      checkSetAtribute(effect, effectAll, 'checked');
+      toggleAttribute(effect, effectAll, 'checked');
       checkClassEffect(effect, 'id', photoPreview);
+      updateEffect(levelControlLine.clientWidth || LINE_WIDTH, MAX_EFFECT_VALUE);
       if (effect.getAttribute('id') !== 'effect-none') {
         effectLevel.classList.remove('hidden');
       } else {
@@ -184,7 +233,7 @@
   var setDefaultSettings = function () {
     modalPhotoModification.classList.add('hidden');
     window.utility.bodyTag.classList.remove('modal-open');
-    checkSetAtribute(effectsButtons[0], effectsButtons, 'checked');
+    toggleAttribute(effectsButtons[0], effectsButtons, 'checked');
     photoPreview.removeAttribute('class');
     photoPreview.removeAttribute('style');
     uploadFile.value = '';
