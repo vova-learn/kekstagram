@@ -1,12 +1,21 @@
 'use strict';
 (function () {
 
-  // import window.utility: bodyTag, ESCAPE, ENTER
-  //        window.comments: renderComments
+  // import window.utility: var bodyTag, var ESCAPE, var ENTER
+  //        window.comments: renderComments();
+  //        window.backend: load(callback);
 
-  var postsPreview = document.querySelectorAll('.picture');
+  var postsPreview = document.querySelector('.pictures');
   var postModal = document.querySelector('.big-picture');
   var postModalClose = postModal.querySelector('.big-picture__cancel');
+
+  var dataPosts;
+
+  var getDataPosts = function (data) {
+    dataPosts = data;
+  };
+
+  window.backend.load(getDataPosts);
 
   var setDataPost = function (post) {
     var postPhoto = postModal.querySelector('.big-picture__img img');
@@ -18,8 +27,9 @@
     postLikes.textContent = post.likes;
     postComments.textContent = post.comments.length;
     postDesctiption.textContent = post.descriptions;
-    window.comments.renderComments(post);
+    window.comments.renderComments(post.comments);
   };
+
 
   var hiddenPostModal = function () {
     postModal.classList.add('hidden');
@@ -47,27 +57,21 @@
     }
   };
 
-  var postPreviewClick = function (post) {
-    post.addEventListener('click', function (evt) {
-      if (evt.target.tagName.toLowerCase() === 'img') {
-        var imgSrc = evt.target.getAttribute('src');
-        showPostModal(window.gallery.posts, imgSrc);
-      }
-    });
+  var postPreviewClickHandler = function (evt) {
+    if (evt.target.tagName.toLowerCase() === 'img') {
+      var imgSrc = evt.target.getAttribute('src');
+      showPostModal(dataPosts, imgSrc);
+    }
   };
 
-  var postPreviewKeydown = function (post) {
-    post.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === window.utility.ENTER) {
-        var imgSrc = evt.target.querySelector('img').getAttribute('src');
-        showPostModal(window.gallery.posts, imgSrc);
-      }
-    });
+  var postPreviewKeydownHandler = function (evt) {
+    if (evt.keyCode === window.utility.ENTER) {
+      var imgSrc = evt.target.querySelector('img').getAttribute('src');
+      showPostModal(dataPosts, imgSrc);
+    }
   };
 
-  for (var i = 0; i < postsPreview.length; i++) {
-    postPreviewClick(postsPreview[i]);
-    postPreviewKeydown(postsPreview[i]);
-  }
+  postsPreview.addEventListener('click', postPreviewClickHandler);
+  postsPreview.addEventListener('keydown', postPreviewKeydownHandler);
 
 })();
