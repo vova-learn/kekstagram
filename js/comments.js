@@ -59,8 +59,8 @@
         openComments = quantityOpenComments + STEP_OPEN_COMMENTS;
       }
       // рендерим порцию комментариев
-      for (var i = quantityOpenComments; i < openComments && i < quantityComments; i++) {
-        postCommentBlock.appendChild(createCommentElement(comments[i]));
+      for (var n = quantityOpenComments; n < openComments && n < quantityComments; n++) {
+        postCommentBlock.appendChild(createCommentElement(comments[n]));
       }
       // показываем сколько комментариев открыто
       commentCount.firstChild.textContent = openComments + ' из ';
