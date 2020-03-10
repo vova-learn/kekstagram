@@ -1,8 +1,10 @@
 'use strict';
 (function () {
 
-  // import window.backend: load(callback)
+  // export window.gallery: getDataPosts();
+  // import window.backend: load(callback);
 
+  var dataPosts;
   var similarListPosts = document.querySelector('.pictures');
   var templatePost = document.querySelector('#picture')
     .content
@@ -27,9 +29,21 @@
       fragment.appendChild(createPostElement(posts[i]));
     }
     similarListPosts.appendChild(fragment);
-
   };
 
-  window.backend.load(renderPosts);
+  var getServerData = function (data) {
+    renderPosts(data);
+    dataPosts = data;
+  };
+
+  var getDataPosts = function () {
+    return dataPosts;
+  };
+
+  window.backend.load(getServerData);
+
+  window.gallery = {
+    getDataPosts: getDataPosts
+  };
 
 })();

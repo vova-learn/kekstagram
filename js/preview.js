@@ -1,35 +1,26 @@
 'use strict';
 (function () {
 
-  // import window.utility: var bodyTag, var ESCAPE, var ENTER
+  // import window.utility: var bodyTag, var ESCAPE, var ENTER;
   //        window.comments: renderComments();
-  //        window.backend: load(callback);
+  //        window.gallery: getDataPosts();
 
   var postsPreview = document.querySelector('.pictures');
   var postModal = document.querySelector('.big-picture');
   var postModalClose = postModal.querySelector('.big-picture__cancel');
 
-  var dataPosts;
-
-  var getDataPosts = function (data) {
-    dataPosts = data;
-  };
-
-  window.backend.load(getDataPosts);
-
   var setDataPost = function (post) {
     var postPhoto = postModal.querySelector('.big-picture__img img');
     var postLikes = postModal.querySelector('.likes-count');
     var postComments = postModal.querySelector('.comments-count');
-    var postDesctiption = postModal.querySelector('.social__caption');
+    var postDescription = postModal.querySelector('.social__caption');
 
     postPhoto.src = post.url;
     postLikes.textContent = post.likes;
     postComments.textContent = post.comments.length;
-    postDesctiption.textContent = post.descriptions;
+    postDescription.textContent = post.descriptions;
     window.comments.renderComments(post.comments);
   };
-
 
   var hiddenPostModal = function () {
     postModal.classList.add('hidden');
@@ -53,6 +44,7 @@
         setDataPost(postsGenerate[i]);
         postModal.classList.remove('hidden');
         window.utility.bodyTag.classList.add('modal-open');
+        break;
       }
     }
   };
@@ -60,14 +52,15 @@
   var postPreviewClickHandler = function (evt) {
     if (evt.target.tagName.toLowerCase() === 'img') {
       var imgSrc = evt.target.getAttribute('src');
-      showPostModal(dataPosts, imgSrc);
+      showPostModal(window.gallery.getDataPosts(), imgSrc);
     }
   };
+
 
   var postPreviewKeydownHandler = function (evt) {
     if (evt.keyCode === window.utility.ENTER) {
       var imgSrc = evt.target.querySelector('img').getAttribute('src');
-      showPostModal(dataPosts, imgSrc);
+      showPostModal(window.gallery.getDataPosts(), imgSrc);
     }
   };
 
