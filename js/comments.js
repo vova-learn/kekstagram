@@ -1,53 +1,13 @@
 'use strict';
 (function () {
 
-  // import window.utility: getRandomNumber, getRandomElement
-  // export window.comments: createComments, renderComments
+  // export window.comments: renderComments()
 
-  var COMMENT_MIN_AVATAR_URL = 1;
-  var COMMENT_MAX_AVATAR_URL = 6;
-  var commentNames = [
-    'Коко',
-    'Лулу',
-    'Гучи',
-    'Кузя',
-    'Пушок'
-  ];
-  var commentMessages = [
-    'Всё отлично!',
-    'В целом всё неплохо. Но не всё.',
-    'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
-    'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
-    'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
-    'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
-  ];
+  var STEP_OPEN_COMMENTS = 5;
+
   var postCommentBlock = document.querySelector('.social__comments');
   var commentCount = document.querySelector('.social__comment-count');
-  var commentLoadMore = document.querySelector('.comments-loader');
-
-  commentCount.classList.add('hidden');
-  commentLoadMore.classList.add('hidden');
-
-  var createComment = function () {
-    var commentAvatar = 'img/avatar-' + window.utility.getRandomNumber(COMMENT_MIN_AVATAR_URL, COMMENT_MAX_AVATAR_URL) + '.svg';
-    var commentName = window.utility.getRandomElement(commentNames);
-    var commentMessage = window.utility.getRandomElement(commentMessages);
-
-    return {
-      avatar: commentAvatar,
-      name: commentName,
-      message: commentMessage
-    };
-  };
-
-  var createComments = function (amount) {
-    var comments = [];
-
-    for (var i = 1; i <= amount; i++) {
-      comments.push(createComment());
-    }
-    return comments;
-  };
+  var commentLoadMore = document.querySelector('.social__comments-loader');
 
   var createCommentElement = function (comment) {
     var commentElement = postCommentBlock.querySelector('.social__comment').cloneNode(true);
@@ -61,23 +21,61 @@
     return commentElement;
   };
 
-  var renderComments = function (post) {
+  var renderComments = function (comments) {
+    // создаём фрагмент комментария
     var fragment = document.createDocumentFragment();
-
-    for (var i = 0; i < post.comments.length; i++) {
-      fragment.appendChild(createCommentElement(post.comments[i]));
+    // общее количество комментариев для данного поста
+    var quantityComments = comments.length;
+    // открываем кнопку «еще», если она была скрыта
+    if (commentLoadMore.classList.contains('hidden')) {
+      commentLoadMore.classList.remove('hidden');
     }
-
-    for (var j = 0; j < postCommentBlock.childElementCount; j++) {
-      if (postCommentBlock.childElementCount > 1) {
-        postCommentBlock.firstChild.remove();
+    // если общее количество комментариев > заданного количества для отображения,
+    // то указываем и рендерим минимальное количество комментариев,
+    // иначе рендерим все комментарии и скрываем кнопку «еще»
+    if (quantityComments > STEP_OPEN_COMMENTS) {
+      commentCount.firstChild.textContent = STEP_OPEN_COMMENTS + ' из ';
+      for (var i = 0; i < STEP_OPEN_COMMENTS; i++) {
+        fragment.appendChild(createCommentElement(comments[i]));
+      }
+    } else {
+      commentCount.firstChild.textContent = quantityComments + ' из ';
+      commentLoadMore.classList.add('hidden');
+      for (var j = 0; j < quantityComments; j++) {
+        fragment.appendChild(createCommentElement(comments[j]));
       }
     }
-    postCommentBlock.replaceChild(fragment, postCommentBlock.querySelector('.social__comment'));
+    // слушатель для кнопки «еще»
+    var commentLoadMoreHandler = function () {
+      // общее количество видимых комментариев
+      var quantityOpenComments = postCommentBlock.children.length;
+      // сколько комментариев будет открыто
+      var openComments;
+      // проверям сколько еще нужно открыть комментариев
+      if (quantityComments <= quantityOpenComments + STEP_OPEN_COMMENTS) {
+        openComments = quantityComments;
+        commentLoadMore.classList.add('hidden');
+        commentLoadMore.removeEventListener('click', commentLoadMoreHandler);
+      } else {
+        openComments = quantityOpenComments + STEP_OPEN_COMMENTS;
+      }
+      // рендерим порцию комментариев
+      for (var n = quantityOpenComments; n < openComments; n++) {
+        fragment.appendChild(createCommentElement(comments[n]));
+      }
+      postCommentBlock.appendChild(fragment);
+      // показываем сколько комментариев открыто
+      commentCount.firstChild.textContent = openComments + ' из ';
+    };
+    // действие по клику на кнопку «еще»
+    commentLoadMore.addEventListener('click', commentLoadMoreHandler);
+    // очищаем комментарии для следующего открытия
+    postCommentBlock.textContent = '';
+    // вставляем фрагмент в блок с комментариями
+    postCommentBlock.appendChild(fragment);
   };
 
   window.comments = {
-    createComments: createComments,
     renderComments: renderComments
   };
 

@@ -1,10 +1,11 @@
 'use strict';
 (function () {
 
-  // import window.utility: bodyTag, ESCAPE, ENTER
-  //        window.comments: renderComments
+  // import window.utility: var bodyTag, var ESCAPE, var ENTER;
+  //        window.comments: renderComments();
+  //        window.gallery: getDataPosts();
 
-  var postsPreview = document.querySelectorAll('.picture');
+  var postsPreview = document.querySelector('.pictures');
   var postModal = document.querySelector('.big-picture');
   var postModalClose = postModal.querySelector('.big-picture__cancel');
 
@@ -12,13 +13,13 @@
     var postPhoto = postModal.querySelector('.big-picture__img img');
     var postLikes = postModal.querySelector('.likes-count');
     var postComments = postModal.querySelector('.comments-count');
-    var postDesctiption = postModal.querySelector('.social__caption');
+    var postDescription = postModal.querySelector('.social__caption');
 
     postPhoto.src = post.url;
     postLikes.textContent = post.likes;
     postComments.textContent = post.comments.length;
-    postDesctiption.textContent = post.descriptions;
-    window.comments.renderComments(post);
+    postDescription.textContent = post.descriptions;
+    window.comments.renderComments(post.comments);
   };
 
   var hiddenPostModal = function () {
@@ -43,31 +44,27 @@
         setDataPost(postsGenerate[i]);
         postModal.classList.remove('hidden');
         window.utility.bodyTag.classList.add('modal-open');
+        break;
       }
     }
   };
 
-  var postPreviewClick = function (post) {
-    post.addEventListener('click', function (evt) {
-      if (evt.target.tagName.toLowerCase() === 'img') {
-        var imgSrc = evt.target.getAttribute('src');
-        showPostModal(window.gallery.posts, imgSrc);
-      }
-    });
+  var postPreviewClickHandler = function (evt) {
+    if (evt.target.tagName.toLowerCase() === 'img') {
+      var imgSrc = evt.target.getAttribute('src');
+      showPostModal(window.gallery.getDataPosts(), imgSrc);
+    }
   };
 
-  var postPreviewKeydown = function (post) {
-    post.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === window.utility.ENTER) {
-        var imgSrc = evt.target.querySelector('img').getAttribute('src');
-        showPostModal(window.gallery.posts, imgSrc);
-      }
-    });
+
+  var postPreviewKeydownHandler = function (evt) {
+    if (evt.keyCode === window.utility.ENTER) {
+      var imgSrc = evt.target.querySelector('img').getAttribute('src');
+      showPostModal(window.gallery.getDataPosts(), imgSrc);
+    }
   };
 
-  for (var i = 0; i < postsPreview.length; i++) {
-    postPreviewClick(postsPreview[i]);
-    postPreviewKeydown(postsPreview[i]);
-  }
+  postsPreview.addEventListener('click', postPreviewClickHandler);
+  postsPreview.addEventListener('keydown', postPreviewKeydownHandler);
 
 })();
