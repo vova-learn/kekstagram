@@ -6,6 +6,9 @@
   var MAX_EFFECT_VALUE = 100;
   var LINE_WIDTH = 454;
 
+
+  var mainTag = document.querySelector('main');
+  var formImageUpload = document.querySelector('#upload-select-image');
   var uploadFile = document.querySelector('#upload-file');
   var modalPhotoModification = document.querySelector('.img-upload__overlay');
   var closeButton = modalPhotoModification.querySelector('#upload-cancel');
@@ -22,9 +25,20 @@
   var levelControlPin = effectLevel.querySelector('.effect-level__pin');
   var hashtagInput = modalPhotoModification.querySelector('.text__hashtags');
   var commentInput = modalPhotoModification.querySelector('.text__description');
+  var validate = true;
 
   var checkSpace = function (checkValue) {
     return checkValue !== '';
+  };
+
+  var checkInvalidHandler = function () {
+    if (!validate && hashtagInput.value) {
+      hashtagInput.style.backgroundColor = '#ff0000';
+    }
+  };
+
+  var checkValidHandler = function () {
+    hashtagInput.removeAttribute('style');
   };
 
   var checkHashtagInputHandler = function () {
@@ -55,25 +69,35 @@
     for (var i = 0; i < hashtags.length; i++) {
       if (hashtags[i][0] !== '#') {
         hashtagInput.setCustomValidity('Хэш-тег должен начинаться с решётки (#)');
+        validate = false;
       } else if (hashtags[i].search(removeSymbol) > 0) {
         hashtagInput.setCustomValidity('После решётки (#) хэш-тег должен состоять только из букв и чисел');
+        validate = false;
       } else if (checkDoubleHash()) {
         hashtagInput.setCustomValidity('Может быть использована только одна решётка (#)');
+        validate = false;
       } else if (hashtags[i].length <= 1) {
         hashtagInput.setCustomValidity('Хеш-тег не может состоять только из одного символа');
+        validate = false;
       } else if (hashtags[i].length > 20) {
         hashtagInput.setCustomValidity('Хеш-тег не может быть длинее 20 символов');
+        validate = false;
       } else if (checkUpLowCase()) {
         hashtagInput.setCustomValidity('Один и тот же хэш-тег не может быть использован дважды без учёта регистра: #ХэшТег и #хэштег считаются одним и тем же тегом');
+        validate = false;
       } else if (hashtags.length > 5) {
         hashtagInput.setCustomValidity('Использование больше пяти хэш-тегов невозможно');
+        validate = false;
       } else {
         hashtagInput.setCustomValidity('');
+        validate = true;
       }
     }
   };
 
   hashtagInput.addEventListener('input', checkHashtagInputHandler);
+  hashtagInput.addEventListener('blur', checkInvalidHandler);
+  hashtagInput.addEventListener('keydown', checkValidHandler);
 
   var checkLevelIntensity = function () {
     var intensity = effectLevelValue.value;
@@ -247,6 +271,50 @@
     if (evt.keyCode === window.utility.ESCAPE && evt.target !== hashtagInput && evt.target !== commentInput) {
       setDefaultSettings();
     }
+  });
+
+  var removeMessage = function () {
+    var successMessage = mainTag.querySelector('.success');
+    var errorMessage = mainTag.querySelector('.error');
+    if (successMessage) {
+      mainTag.removeChild(successMessage);
+    }
+    if (errorMessage) {
+      mainTag.removeChild(errorMessage);
+    }
+  };
+
+  var addMessage = function (template) {
+    var messageElement = template.cloneNode(true);
+    mainTag.appendChild(messageElement);
+    document.addEventListener('click', removeMessage);
+    document.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === window.utility.ESCAPE) {
+        removeMessage();
+      }
+    });
+    setDefaultSettings();
+  };
+
+  var showErrorMessage = function () {
+    modalPhotoModification.classList.add('hidden');
+    var errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
+    addMessage(errorMessageTemplate);
+  };
+
+  var showSuccessMessage = function () {
+    modalPhotoModification.classList.add('hidden');
+    var successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
+    addMessage(successMessageTemplate);
+  };
+
+  formImageUpload.addEventListener('submit', function (evt) {
+    window.backend.upload(new FormData(formImageUpload), showSuccessMessage, showErrorMessage);
+    evt.preventDefault();
+  });
+
+  document.removeEventListener('click', function () {
+    removeMessage();
   });
 
 })();
