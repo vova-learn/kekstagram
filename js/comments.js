@@ -34,19 +34,19 @@
     // то указываем и рендерим минимальное количество комментариев,
     // иначе рендерим все комментарии и скрываем кнопку «еще»
     if (quantityComments > STEP_OPEN_COMMENTS) {
+      commentCount.firstChild.textContent = STEP_OPEN_COMMENTS + ' из ';
       for (var i = 0; i < STEP_OPEN_COMMENTS; i++) {
-        commentCount.firstChild.textContent = STEP_OPEN_COMMENTS + ' из ';
         fragment.appendChild(createCommentElement(comments[i]));
       }
     } else {
+      commentCount.firstChild.textContent = quantityComments + ' из ';
+      commentLoadMore.classList.add('hidden');
       for (var j = 0; j < quantityComments; j++) {
-        commentCount.firstChild.textContent = quantityComments + ' из ';
         fragment.appendChild(createCommentElement(comments[j]));
-        commentLoadMore.classList.add('hidden');
       }
     }
-    // действие по клику на кнопку «еще»
-    commentLoadMore.addEventListener('click', function () {
+    // слушатель для кнопки «еще»
+    var commentLoadMoreHandler = function () {
       // общее количество видимых комментариев
       var quantityOpenComments = postCommentBlock.children.length;
       // сколько комментариев будет открыто
@@ -55,16 +55,20 @@
       if (quantityComments <= quantityOpenComments + STEP_OPEN_COMMENTS) {
         openComments = quantityComments;
         commentLoadMore.classList.add('hidden');
+        commentLoadMore.removeEventListener('click', commentLoadMoreHandler);
       } else {
         openComments = quantityOpenComments + STEP_OPEN_COMMENTS;
       }
       // рендерим порцию комментариев
-      for (var n = quantityOpenComments; n < openComments && n < quantityComments; n++) {
-        postCommentBlock.appendChild(createCommentElement(comments[n]));
+      for (var n = quantityOpenComments; n < openComments; n++) {
+        fragment.appendChild(createCommentElement(comments[n]));
       }
+      postCommentBlock.appendChild(fragment);
       // показываем сколько комментариев открыто
       commentCount.firstChild.textContent = openComments + ' из ';
-    });
+    };
+    // действие по клику на кнопку «еще»
+    commentLoadMore.addEventListener('click', commentLoadMoreHandler);
     // очищаем комментарии для следующего открытия
     postCommentBlock.textContent = '';
     // вставляем фрагмент в блок с комментариями
