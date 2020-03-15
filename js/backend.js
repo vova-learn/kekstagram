@@ -14,10 +14,10 @@
     xhr.timeout = TIMEOUT_REQUEST;
 
     var eventLoadXHRHandler = function () {
-      if (this.status === STATUS_OK) {
-        loadHandler(this.response);
+      if (xhr.status === STATUS_OK) {
+        loadHandler(xhr.response);
       } else {
-        throw new Error('Ошибка запроса данных ' + this.status);
+        throw new Error('Ошибка запроса данных ' + xhr.status);
       }
     };
 

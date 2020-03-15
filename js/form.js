@@ -247,14 +247,6 @@
     }
   });
 
-  var modificationPhotoHandler = function () {
-    modalPhotoModification.classList.remove('hidden');
-    bodyTag.classList.add('modal-open');
-    effectLevel.classList.add('hidden');
-  };
-
-  uploadFile.addEventListener('change', modificationPhotoHandler);
-
   var setDefaultSettings = function () {
     modalPhotoModification.classList.add('hidden');
     bodyTag.classList.remove('modal-open');
