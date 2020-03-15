@@ -75,17 +75,12 @@
   };
 
   var renderDiscussedPosts = function (posts) {
-    var fragment = document.createDocumentFragment();
     var copyPosts = posts.slice();
 
     copyPosts.sort(function (activePost, nextPost) {
       return nextPost.comments.length - activePost.comments.length;
     });
-
-    for (var i = 0; i < MAX_POSTS; i++) {
-      fragment.appendChild(createPostElement(copyPosts[i]));
-    }
-    similarListPosts.appendChild(fragment);
+    renderPosts(copyPosts);
   };
 
   filterBlock.addEventListener('click', function (evt) {
