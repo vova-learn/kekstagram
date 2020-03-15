@@ -1,10 +1,11 @@
 'use strict';
 (function () {
 
-  // import window.utility: var bodyTag, var ESCAPE, var ENTER;
+  // import window.utility: var ESCAPE, var ENTER;
   //        window.comments: renderComments();
   //        window.gallery: getDataPosts();
 
+  var bodyTag = document.querySelector('body');
   var postsPreview = document.querySelector('.pictures');
   var postModal = document.querySelector('.big-picture');
   var postModalClose = postModal.querySelector('.big-picture__cancel');
@@ -24,7 +25,7 @@
 
   var hiddenPostModal = function () {
     postModal.classList.add('hidden');
-    window.utility.bodyTag.classList.remove('modal-open');
+    bodyTag.classList.remove('modal-open');
   };
 
   postModalClose.addEventListener('click', function () {
@@ -43,7 +44,7 @@
       if (imgSrc === postsGenerate[i].url) {
         setDataPost(postsGenerate[i]);
         postModal.classList.remove('hidden');
-        window.utility.bodyTag.classList.add('modal-open');
+        bodyTag.classList.add('modal-open');
         break;
       }
     }

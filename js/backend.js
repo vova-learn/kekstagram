@@ -2,6 +2,7 @@
 (function () {
 
   // export window.backend: load(callback);
+  //        window.backend: upload((dataForm, loadHandler, errorHandler));
 
   var URL = 'https://js.dump.academy/kekstagram/';
   var STATUS_OK = 200;

@@ -5,6 +5,7 @@
 
   var STEP_OPEN_COMMENTS = 5;
 
+  var postModalClose = document.querySelector('.big-picture__cancel');
   var postCommentBlock = document.querySelector('.social__comments');
   var commentCount = document.querySelector('.social__comment-count');
   var commentLoadMore = document.querySelector('.social__comments-loader');
@@ -55,7 +56,6 @@
       if (quantityComments <= quantityOpenComments + STEP_OPEN_COMMENTS) {
         openComments = quantityComments;
         commentLoadMore.classList.add('hidden');
-        commentLoadMore.removeEventListener('click', commentLoadMoreHandler);
       } else {
         openComments = quantityOpenComments + STEP_OPEN_COMMENTS;
       }
@@ -69,6 +69,10 @@
     };
     // действие по клику на кнопку «еще»
     commentLoadMore.addEventListener('click', commentLoadMoreHandler);
+    // удаляем событие слушателя кнопки «еще»
+    postModalClose.addEventListener('click', function () {
+      commentLoadMore.removeEventListener('click', commentLoadMoreHandler);
+    });
     // очищаем комментарии для следующего открытия
     postCommentBlock.textContent = '';
     // вставляем фрагмент в блок с комментариями

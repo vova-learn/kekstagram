@@ -1,12 +1,13 @@
 'use strict';
 (function () {
 
-  // import window.utility: bodyTag, ESCAPE
+  // import window.utility: ESCAPE
+  //        window.backend: upload(dataForm, loadHandler, errorHandler);
 
   var MAX_EFFECT_VALUE = 100;
   var LINE_WIDTH = 454;
 
-
+  var bodyTag = document.querySelector('body');
   var mainTag = document.querySelector('main');
   var formImageUpload = document.querySelector('#upload-select-image');
   var uploadFile = document.querySelector('#upload-file');
@@ -248,7 +249,7 @@
 
   var modificationPhotoHandler = function () {
     modalPhotoModification.classList.remove('hidden');
-    window.utility.bodyTag.classList.add('modal-open');
+    bodyTag.classList.add('modal-open');
     effectLevel.classList.add('hidden');
   };
 
@@ -256,7 +257,7 @@
 
   var setDefaultSettings = function () {
     modalPhotoModification.classList.add('hidden');
-    window.utility.bodyTag.classList.remove('modal-open');
+    bodyTag.classList.remove('modal-open');
     toggleAttribute(effectsButtons[0], effectsButtons, 'checked');
     photoPreview.removeAttribute('class');
     photoPreview.removeAttribute('style');
