@@ -98,9 +98,9 @@
     }
   });
 
-  var debouncePosts = window.utility.debounce(function (cb, evt) {
+  var debouncePosts = window.utility.debounce(function (postRenderHandler, evt) {
     clearPosts(evt);
-    cb(dataPosts);
+    postRenderHandler(dataPosts);
   });
 
   var getServerData = function (data) {
