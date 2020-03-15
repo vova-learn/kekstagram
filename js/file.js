@@ -13,7 +13,6 @@
     evt.preventDefault();
     // загруженный файл
     var file = evt.target.files[0];
-    console.log(file);
     // если файл загружен
     if (file) {
       var fileName = file.name.toLowerCase();
@@ -43,13 +42,11 @@
         });
         // если файл прочитался с ошбкой
         reader.addEventListener('error', function () {
-          alert('Ошибка загрузки файла :(');
           throw new Error('Ошибка загрузки файла');
         });
         // читаем выбранный пользователем файл
         reader.readAsDataURL(file);
       } else {
-        alert('Загрузите файл в одном из форматов: gif, jpg, jpeg или png!');
         throw new Error('Загрузите файл в одном из форматов: gif, jpg, jpeg или png');
       }
     }
