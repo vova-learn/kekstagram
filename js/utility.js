@@ -1,12 +1,11 @@
 'use strict';
 (function () {
 
-  // export window.utility: var ESCAPE, var ENTER, var bodyTag, getRandomElement, getRandomNumber
+  // export window.utility: var ESCAPE, var ENTER, getRandomElement, getRandomNumber
 
   var ESC_KEY = 27;
   var ENTER_KEY = 13;
-  var DEBOUNCE_INTERVAL = 150;
-  var bodyTag = document.querySelector('body');
+  var DEBOUNCE_INTERVAL = 500;
 
   var debounce = function (cb) {
     var lastTimeout = null;
@@ -25,7 +24,6 @@
   window.utility = {
     ESCAPE: ESC_KEY,
     ENTER: ENTER_KEY,
-    bodyTag: bodyTag,
     debounce: debounce
   };
 

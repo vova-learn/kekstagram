@@ -3,6 +3,7 @@
 
   // export window.gallery: getDataPosts();
   // import window.backend: load(callback);
+  //        window.utility: debounce(callback);
 
   var MAX_POSTS = 25;
   var RANDOM_POSTS = 10;
@@ -43,12 +44,13 @@
       picture.remove();
     });
 
-    if (!evt.target.classList.contains(activeFilter)) {
-      filterButtons.forEach(function (button) {
+    filterButtons.forEach(function (button) {
+      if (button === evt.target && !button.classList.contains(activeFilter)) {
+        button.classList.add(activeFilter);
+      } else if (button !== evt.target && button.classList.contains(activeFilter)) {
         button.classList.remove(activeFilter);
-      });
-      evt.target.classList.add(activeFilter);
-    }
+      }
+    });
   };
 
   var renderPosts = function (posts) {
