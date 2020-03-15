@@ -33,7 +33,7 @@
 
   var checkInvalidHandler = function () {
     if (!validate && hashtagInput.value) {
-      hashtagInput.style.backgroundColor = '#ff0000';
+      hashtagInput.style.borderColor = '#ff0000';
     }
   };
 
