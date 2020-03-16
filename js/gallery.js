@@ -23,15 +23,15 @@
   var discussedButton = filterBlock.querySelector('#filter-discussed');
 
   var createPostElement = function (post) {
-    var postElement = templatePost.cloneNode(true);
-    var postImg = postElement.querySelector('.picture__img');
-    var postLikes = postElement.querySelector('.picture__likes');
-    var postComments = postElement.querySelector('.picture__comments');
+    var clonePost = templatePost.cloneNode(true);
+    var postImg = clonePost.querySelector('.picture__img');
+    var postLikes = clonePost.querySelector('.picture__likes');
+    var postComments = clonePost.querySelector('.picture__comments');
     postImg.src = post.url;
     postLikes.textContent = post.likes;
     postComments.textContent = post.comments.length;
 
-    return postElement;
+    return clonePost;
   };
 
   var getRandomIndexPosts = function (posts) {
