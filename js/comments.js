@@ -71,6 +71,7 @@
     commentLoadMore.addEventListener('click', commentLoadMoreHandler);
     // удаляем событие слушателя кнопки «еще»
     postModalClose.addEventListener('click', function () {
+      // пропущен removeEventListener по нажатию на Esc
       commentLoadMore.removeEventListener('click', commentLoadMoreHandler);
     });
     // очищаем комментарии для следующего открытия

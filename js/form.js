@@ -111,7 +111,8 @@
     } else if (photoPreview.classList.contains('effects__preview--phobos')) {
       photoPreview.style.filter = 'blur(' + 3 * intensity / 100 + 'px)';
     } else if (photoPreview.classList.contains('effects__preview--heat')) {
-      photoPreview.style.filter = 'brightness(' + 3 * intensity / 100 + ')';
+      photoPreview.style.filter = 'brightness(' + 3 * intensity / 100 + ')'; // яркость варьируется от 0 до 3
+      // по заданию - Для эффекта «Зной» — filter: brightness(1..3);
     }
   };
 
@@ -278,6 +279,7 @@
   };
 
   var addMessage = function (template) {
+    // можем здесь потерять балы https://up.htmlacademy.ru/javascript/19/criteries#d6
     var messageElement = template.cloneNode(true);
     mainTag.appendChild(messageElement);
     document.addEventListener('click', removeMessage);
@@ -303,6 +305,8 @@
 
   formImageUpload.addEventListener('submit', function (evt) {
     window.backend.upload(new FormData(formImageUpload), showSuccessMessage, showErrorMessage);
+    // https://up.htmlacademy.ru/javascript/19/project/kekstagram#kekstagram-3-3
+    setDefaultSettings();
     evt.preventDefault();
   });
 

@@ -39,6 +39,7 @@
           effectLevel.classList.add('hidden');
           // присвоаиваем картинке результат чтения
           insetFile.src = reader.result;
+          // надо подставить загруженную картинку в миниатюры .effects__preview как background
         });
         // если файл прочитался с ошбкой
         reader.addEventListener('error', function () {
