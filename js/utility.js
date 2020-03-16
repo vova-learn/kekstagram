@@ -1,7 +1,7 @@
 'use strict';
 (function () {
 
-  // export window.utility: var ESCAPE, var ENTER, getRandomElement, getRandomNumber
+  // export window.utility: var ESCAPE, var ENTER, debounce(cb);
 
   var ESC_KEY = 27;
   var ENTER_KEY = 13;

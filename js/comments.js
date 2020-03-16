@@ -1,7 +1,8 @@
 'use strict';
 (function () {
 
-  // export window.comments: renderComments()
+  // export window.comments: renderComments();
+  //        window.utility: var ESCAPE;
 
   var STEP_OPEN_COMMENTS = 5;
 
@@ -11,15 +12,15 @@
   var commentLoadMore = document.querySelector('.social__comments-loader');
 
   var createCommentElement = function (comment) {
-    var commentElement = postCommentBlock.querySelector('.social__comment').cloneNode(true);
-    var commentAvatar = commentElement.querySelector('.social__picture');
-    var commentMessage = commentElement.querySelector('.social__text');
+    var cloneComment = postCommentBlock.querySelector('.social__comment').cloneNode(true);
+    var commentAvatar = cloneComment.querySelector('.social__picture');
+    var commentMessage = cloneComment.querySelector('.social__text');
 
     commentAvatar.src = comment.avatar;
     commentAvatar.alt = comment.name;
     commentMessage.textContent = comment.message;
 
-    return commentElement;
+    return cloneComment;
   };
 
   var renderComments = function (comments) {
@@ -72,6 +73,13 @@
     // удаляем событие слушателя кнопки «еще»
     postModalClose.addEventListener('click', function () {
       commentLoadMore.removeEventListener('click', commentLoadMoreHandler);
+    });
+    // удаляем событие слушателя кнопки «еще» при нажатии на ESC
+    document.addEventListener('keydown', function (evt) {
+      var openPostModal = document.querySelector('.big-picture').classList.contains('hidden');
+      if (evt.keyCode === window.utility.ESCAPE && !openPostModal) {
+        commentLoadMore.removeEventListener('click', commentLoadMoreHandler);
+      }
     });
     // очищаем комментарии для следующего открытия
     postCommentBlock.textContent = '';

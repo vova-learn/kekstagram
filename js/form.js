@@ -111,7 +111,7 @@
     } else if (photoPreview.classList.contains('effects__preview--phobos')) {
       photoPreview.style.filter = 'blur(' + 3 * intensity / 100 + 'px)';
     } else if (photoPreview.classList.contains('effects__preview--heat')) {
-      photoPreview.style.filter = 'brightness(' + 3 * intensity / 100 + ')';
+      photoPreview.style.filter = 'brightness(' + ((2 * intensity / 100) + 1) + ')';
     }
   };
 
@@ -166,6 +166,7 @@
         elements[i].removeAttribute(attribute);
       }
       element.setAttribute(attribute, '');
+      element.checked = true;
     }
   };
 
@@ -250,10 +251,13 @@
   var setDefaultSettings = function () {
     modalPhotoModification.classList.add('hidden');
     bodyTag.classList.remove('modal-open');
-    toggleAttribute(effectsButtons[0], effectsButtons, 'checked');
+    scaleValue.value = '100%';
     photoPreview.removeAttribute('class');
     photoPreview.removeAttribute('style');
+    toggleAttribute(effectsButtons[0], effectsButtons, 'checked');
     uploadFile.value = '';
+    hashtagInput.value = '';
+    commentInput.value = '';
   };
 
   closeButton.addEventListener('click', function () {
@@ -278,8 +282,8 @@
   };
 
   var addMessage = function (template) {
-    var messageElement = template.cloneNode(true);
-    mainTag.appendChild(messageElement);
+    var messageModal = template.cloneNode(true);
+    mainTag.appendChild(messageModal);
     document.addEventListener('click', removeMessage);
     document.addEventListener('keydown', function (evt) {
       if (evt.keyCode === window.utility.ESCAPE) {
@@ -304,6 +308,7 @@
   formImageUpload.addEventListener('submit', function (evt) {
     window.backend.upload(new FormData(formImageUpload), showSuccessMessage, showErrorMessage);
     evt.preventDefault();
+    setDefaultSettings();
   });
 
   document.removeEventListener('click', function () {

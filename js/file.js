@@ -6,6 +6,7 @@
   var uploadFile = bodyTag.querySelector('#upload-file');
   var uploadFilePreview = document.querySelector('.img-upload__preview');
   var insetFile = bodyTag.querySelector('.img-upload__preview img');
+  var insertFileInMiniPreview = bodyTag.querySelectorAll('.effects__preview');
   var modalPhotoModification = bodyTag.querySelector('.img-upload__overlay');
   var effectLevel = modalPhotoModification.querySelector('.effect-level');
 
@@ -37,8 +38,11 @@
           uploadFilePreview.style.height = 'auto';
           // скрываем бегунок стандартного фильтра
           effectLevel.classList.add('hidden');
-          // присвоаиваем картинке результат чтения
+          // присвоаиваем картинке и её миниатюре результат чтения
           insetFile.src = reader.result;
+          insertFileInMiniPreview.forEach(function (imgFile) {
+            imgFile.style.backgroundImage = 'url(' + reader.result + ')';
+          });
         });
         // если файл прочитался с ошбкой
         reader.addEventListener('error', function () {
