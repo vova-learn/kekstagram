@@ -163,8 +163,8 @@
 
   var toggleAttribute = function (element, elements, attribute) {
     if (!element.hasAttribute(attribute)) {
-      elements.forEach(function (element) {
-        element.removeAttribute(attribute);
+      elements.forEach(function (effectsButton) {
+        effectsButton.removeAttribute(attribute);
       });
       element.setAttribute(attribute, '');
       element.checked = true;
