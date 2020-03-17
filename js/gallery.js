@@ -1,9 +1,9 @@
 'use strict';
 (function () {
 
-  // export window.gallery: getDataPosts();
-  // import window.backend: load(callback);
-  //        window.utility: debounce(callback);
+  // export window gallery: функция возращает полученные данные с сервера getDataPosts
+  // import window backend: используем функцию load(callback)
+  //        window utility: используем функцию debounce(callback) для устранения эффеткта дребежжания
 
   var MAX_POSTS = 25;
   var RANDOM_POSTS = 10;

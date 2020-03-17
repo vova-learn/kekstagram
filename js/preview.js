@@ -1,9 +1,9 @@
 'use strict';
 (function () {
 
-  // import window.utility: var ESCAPE, var ENTER;
-  //        window.comments: renderComments();
-  //        window.gallery: getDataPosts();
+  // import window utility: ключ для ESCAPE, ключ для ENTER
+  //        window comments: функция отрисовки комментариев renderComments
+  //        window gallery: функция для получения загруженных данных getDataPosts
 
   var bodyTag = document.querySelector('body');
   var postsPreview = document.querySelector('.pictures');
@@ -20,7 +20,7 @@
     postLikes.textContent = post.likes;
     postComments.textContent = post.comments.length;
     postDescription.textContent = post.descriptions;
-    window.comments.renderComments(post.comments);
+    window.social.renderComments(post.comments);
   };
 
   var hiddenPostModal = function () {
@@ -40,14 +40,12 @@
   });
 
   var showPostModal = function (postsGenerate, imgSrc) {
-    for (var i = 0; i < postsGenerate.length; i++) {
-      if (imgSrc === postsGenerate[i].url) {
-        setDataPost(postsGenerate[i]);
-        postModal.classList.remove('hidden');
-        bodyTag.classList.add('modal-open');
-        break;
-      }
-    }
+    var dataPost = postsGenerate.find(function (post) {
+      return imgSrc === post.url;
+    });
+    setDataPost(dataPost);
+    postModal.classList.remove('hidden');
+    bodyTag.classList.add('modal-open');
   };
 
   var postPreviewClickHandler = function (evt) {

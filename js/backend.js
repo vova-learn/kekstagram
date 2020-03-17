@@ -1,8 +1,8 @@
 'use strict';
 (function () {
 
-  // export window.backend: load(callback);
-  //        window.backend: upload((dataForm, loadHandler, errorHandler));
+  // export window backend: функция получения данных с сервера load(callback)
+  //        window backend: функция отправки данных на сервер upload(data, callback, callback)
 
   var URL = 'https://js.dump.academy/kekstagram/';
   var STATUS_OK = 200;
@@ -25,9 +25,13 @@
       errorHandler();
     };
 
+    var eventTimeoutXHRHandler = function () {
+      errorHandler();
+    };
+
     xhr.addEventListener('load', eventLoadXHRHandler);
     xhr.addEventListener('error', eventErrorXHRHandler);
-    xhr.addEventListener('timeout', eventErrorXHRHandler);
+    xhr.addEventListener('timeout', eventTimeoutXHRHandler);
 
     return xhr;
   };

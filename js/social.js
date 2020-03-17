@@ -1,8 +1,8 @@
 'use strict';
 (function () {
 
-  // export window.comments: renderComments();
-  //        window.utility: var ESCAPE;
+  // export window social: функция рендеринга комментариев renderComments
+  //        window utility: ключ для ESCAPE
 
   var STEP_OPEN_COMMENTS = 5;
 
@@ -87,7 +87,7 @@
     postCommentBlock.appendChild(fragment);
   };
 
-  window.comments = {
+  window.social = {
     renderComments: renderComments
   };
 

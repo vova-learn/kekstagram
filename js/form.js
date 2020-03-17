@@ -1,11 +1,12 @@
 'use strict';
 (function () {
 
-  // import window.utility: ESCAPE
-  //        window.backend: upload(dataForm, loadHandler, errorHandler);
+  // import window utility: ключ для ESCAPE
+  //        window backend: функция отправки данных на сервер upload(data, callback, callback)
 
   var MAX_EFFECT_VALUE = 100;
   var LINE_WIDTH = 454;
+  var BORDER_ERROR = '#ff0000';
 
   var bodyTag = document.querySelector('body');
   var mainTag = document.querySelector('main');
@@ -34,7 +35,7 @@
 
   var checkInvalidHandler = function () {
     if (!validate && hashtagInput.value) {
-      hashtagInput.style.borderColor = '#ff0000';
+      hashtagInput.style.borderColor = BORDER_ERROR;
     }
   };
 
@@ -162,9 +163,9 @@
 
   var toggleAttribute = function (element, elements, attribute) {
     if (!element.hasAttribute(attribute)) {
-      for (var i = 0; i < elements.length; i++) {
-        elements[i].removeAttribute(attribute);
-      }
+      elements.forEach(function (element) {
+        element.removeAttribute(attribute);
+      });
       element.setAttribute(attribute, '');
       element.checked = true;
     }
@@ -284,7 +285,9 @@
   var addMessage = function (template) {
     var messageModal = template.cloneNode(true);
     mainTag.appendChild(messageModal);
-    document.addEventListener('click', removeMessage);
+    document.addEventListener('click', function () {
+      removeMessage();
+    });
     document.addEventListener('keydown', function (evt) {
       if (evt.keyCode === window.utility.ESCAPE) {
         removeMessage();
