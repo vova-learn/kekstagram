@@ -1,9 +1,5 @@
 'use strict';
 (function () {
-
-  // export window backend: функция получения данных с сервера load(callback)
-  //        window backend: функция отправки данных на сервер upload(data, callback, callback)
-
   var URL = 'https://js.dump.academy/kekstagram/';
   var STATUS_OK = 200;
   var TIMEOUT_REQUEST = 10000;

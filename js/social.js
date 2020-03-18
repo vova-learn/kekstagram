@@ -1,9 +1,5 @@
 'use strict';
 (function () {
-
-  // export window social: функция рендеринга комментариев renderComments
-  //        window utility: ключ для ESCAPE
-
   var STEP_OPEN_COMMENTS = 5;
 
   var postModalClose = document.querySelector('.big-picture__cancel');

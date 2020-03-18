@@ -1,8 +1,5 @@
 'use strict';
 (function () {
-
-  // export window.utility: ключ для ESCAPE, ключ для ENTER, функция debounce(callback);
-
   var ESC_KEY = 27;
   var ENTER_KEY = 13;
   var DEBOUNCE_INTERVAL = 500;

@@ -1,10 +1,5 @@
 'use strict';
 (function () {
-
-  // import window utility: ключ для ESCAPE, ключ для ENTER
-  //        window comments: функция отрисовки комментариев renderComments
-  //        window gallery: функция для получения загруженных данных getDataPosts
-
   var bodyTag = document.querySelector('body');
   var postsPreview = document.querySelector('.pictures');
   var postModal = document.querySelector('.big-picture');

@@ -1,9 +1,5 @@
 'use strict';
 (function () {
-
-  // import window utility: ключ для ESCAPE
-  //        window backend: функция отправки данных на сервер upload(data, callback, callback)
-
   var MAX_EFFECT_VALUE = 100;
   var LINE_WIDTH = 454;
   var BORDER_ERROR = '#ff0000';
