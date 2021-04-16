@@ -1,4 +1,6 @@
 ### Проект «Кекстаграм» :white_check_mark:
+`JavaScript` `EcmaScript2015` `AJAX` `XMLHttpRequest` `IIFE` `debounce` `grag&drop-js` `formValidations`
+------
 Автор: [Vladimir Pipko](https://github.com/vovapipko) <br />
 Наставник: [Yulia Koretskaya](https://github.com/yulllll) <br />
 Дeмо: [Проект «Кекстаграм»](https://vovapipko.github.io/kekstagram/ "Проект «Кекстаграм»")
