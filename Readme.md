@@ -1,11 +1,11 @@
 ### Проект «Кекстаграм» :white_check_mark:
-`JavaScript` `EcmaScript2015` `AJAX` `XMLHttpRequest` `IIFE` `debounce` `grag&drop-js` `formValidations`
+`JavaScript` `EcmaScript2015` `AJAX` `XMLHttpRequest` `IIFE` `debounce` `drag&drop-js` `formValidations`
 
 Автор: [Vladimir Pipko](https://github.com/vovapipko) <br />
 Наставник: [Yulia Koretskaya](https://github.com/yulllll) <br />
 Дeмо: [Проект «Кекстаграм»](https://vovapipko.github.io/kekstagram/ "Проект «Кекстаграм»")  <br />
 
-Проект был создан в рамках ученого онлайн‑курса **«JavaScript, уровень 1»** от htmlacademy.ru, онлайн-курс 9 недель. Проект создавался под руководством наставника. Он давал обратную связь по результату проделанной работы на консультациях и оставлял комментарии в PullRequest после ревью кода. Вся работа велась через ветки в GIT со связкой с GITHUB.
+Проект создан в рамках онлайн‑курса **«JavaScript, уровень 1»** от htmlacademy.ru, онлайн-курс продолжительностью 9 недель. Вся работа велась под руководством наставника. По результату проделанной работы от наставника была обратная связь в виде замечаний или рекомендаций в комметариях к PullRequest'у после ревью кода или на госовых консультациях. Рабочий процесс происходил через ветки в GIT со связкой с github.com.
 
 
 ##### Краткая программа курса:
