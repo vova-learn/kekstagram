@@ -3,7 +3,7 @@
 
 Автор: [Vladimir Pipko](https://github.com/vovapipko) <br />
 Наставник: [Yulia Koretskaya](https://github.com/yulllll) <br />
-Дeмо: [Проект «Кекстаграм»](https://vovapipko.github.io/kekstagram/ "Проект «Кекстаграм»")<br />
+Дeмо: [Проект «Кекстаграм»](https://vovapipko.github.io/kekstagram/ "Проект «Кекстаграм»")  <br />
 `JavaScript` `EcmaScript2015` `AJAX` `XMLHttpRequest` `IIFE` `debounce` `grag&drop-js` `formValidations`
 
 Проект был создан в рамках ученого онлайн‑курса **«JavaScript, уровень 1»** от htmlacademy.ru, онлайн-курс 9 недель. Проект создавался под руководством наставника. Он давал обратную связь по результату проделанной работы на консультациях и оставлял комментарии в PullRequest после ревью кода. Вся работа велась через ветки в GIT со связкой с GITHUB.
